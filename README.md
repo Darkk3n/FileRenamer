@@ -3,24 +3,36 @@ FileRenamer
 
 Overview
 --------
-FileRenamer is a small Windows desktop utility (WinForms) written for .NET 10 that helps with batch renaming files. It focuses on quick, predictable renaming with a preview step and simple token-based patterns so you can safely rename large numbers of files.
+FileRenamer is a Windows desktop (WinForms) utility targeting .NET 10. It scans PDF files, extracts structured data from each page, presents the extracted data in an editable preview grid, and exports renamed single‑page PDFs using a deterministic filename format. The tool is optimized for batch processing of payment documents.
+
+What changed
+------------
+- The app now parses PDF pages and extracts fields: amount, vendor name, reason/concept, and currency.
+- Multi‑page PDFs are split into single‑page output files when appropriate; true multipage source documents are preserved while pre‑segmented single‑page sources can be removed after export.
+- A progress dialog shows per‑file and per‑page processing status.
+- Extraction includes heuristic cleaning (spacing fixes and split‑word healing) to improve vendor and reason text quality.
+- iText (iText.Kernel) is used for robust PDF text extraction and page copying.
 
 Key features
 ------------
-- Batch rename files and whole folders
-- Preview changes before applying them
-- Token-based name patterns (counters, original name, extension, date)
-- Filter by extension and simple search patterns
-- Undo the last rename operation
-- Lightweight single-window UI for fast workflows
+- Per‑page PDF text extraction and field parsing (amount, vendor, concept/reason, currency)
+- DataGridView preview where extracted rows can be reviewed and edited before export
+- Deterministic filename generation using date, selected company, vendor, concept, amount, and currency
+- Splits and writes single‑page PDF files using iText, preserves multipage source files, and optionally deletes pre‑segmented single‑page sources
+- Progress UI with status messages and graceful error handling for corrupted PDFs
 
 How it works (usage summary)
 ---------------------------
-1. Launch the application.
-2. Add files or select a folder to populate the file list (UI).
-3. Enter a rename pattern using tokens (examples below).
-4. Use the Preview feature to verify results.
-5. Apply the rename operation when satisfied.
+1. Select a company from the UI control.
+2. Scan a folder of PDFs. Each page is parsed and added as a row in the preview grid.
+3. Review and edit extracted values in the grid if needed.
+4. Start processing: the app copies pages into new single‑page PDFs and names them using the configured pattern.
+
+Filename format
+---------------
+Output files are named with the following pattern:
+
+<date>-<company>-<vendor> <concept>-<amount> <currency>.pdf
 
 Common tokens
 -------------
@@ -29,16 +41,16 @@ Common tokens
 - {counter} — sequential number (configurable start and padding)
 - {date:format} — file timestamp formatted with .NET date format strings (e.g., {date:yyyyMMdd})
 
-Pattern examples
-----------------
-- "{name}_{counter:000}" -> adds a zero-padded counter, e.g. photo_001.jpg
-- "{date:yyyyMMdd}_{name}{ext}" -> prepends the date to the existing name
+Dependencies
+------------
+- iText.Kernel for PDF parsing and page copying. Check the project file for the exact package/version.
 
 Troubleshooting
 ---------------
-- If preview shows unexpected results, try a simpler pattern (e.g., {name}{ext}) and verify tokens are used correctly.
-- Check file permissions if rename operations fail on some files.
+- When a PDF fails to parse the app will add an error row to the grid describing the failure; inspect and skip or correct that row.
+- Ensure the app has write/delete permissions for the target directory when export fails.
+- Large folders or many multipage PDFs will increase processing time; the progress dialog reports ongoing status.
 
 Author
 ------
-Created by the repository owner. For questions or issues, check the repository issue tracker.
+Created by the repository owner.
