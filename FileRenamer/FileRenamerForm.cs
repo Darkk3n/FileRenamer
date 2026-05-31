@@ -1,7 +1,6 @@
-﻿using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using iText.Kernel.Pdf;
-using iText.Kernel.Pdf.Canvas.Parser;
+using Microsoft.VisualBasic.FileIO;
 
 namespace FileRenamer
 {
@@ -98,6 +97,7 @@ namespace FileRenamer
 
             if (dialogResult == DialogResult.Yes)
             {
+                var backupFolder = BackupSourceFiles(LblFolder.Text);
                 var files = Directory.GetFiles(LblFolder.Text, "*.pdf").ToArray();
                 Array.Sort(files, (x, y) => StrCmpLogicalW(x, y)); // Enforces 1, 2, 3, 10 order
 
@@ -180,12 +180,12 @@ namespace FileRenamer
                     {
                         if (internalPageTracker < totalPagesInFile)
                         {
-                            internalPageTracker++; 
+                            internalPageTracker++;
                         }
                         else
                         {
-                            internalPageTracker = 1; 
-                            currentFileIndex++;     
+                            internalPageTracker = 1;
+                            currentFileIndex++;
                         }
                     }
 
@@ -216,8 +216,38 @@ namespace FileRenamer
                     message += $"\nSe eliminaron {deletedCount} archivos fuente pre-segmentados (los multipágina se conservaron).";
                 }
 
+                try
+                {
+                    if (Directory.Exists(backupFolder))
+                    {
+                        Directory.Delete(backupFolder, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Nota: El proceso terminó con éxito, pero no se pudo eliminar la carpeta temporal de respaldo: {ex.Message}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
                 MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private static string BackupSourceFiles(string sourceFolder)
+        {
+            var backupFolder = string.Empty;
+            if (Directory.Exists(sourceFolder))
+            {
+                try
+                {
+                    backupFolder = Path.Combine(Directory.GetParent(sourceFolder).FullName, Path.GetFileName(sourceFolder) + "_Backup_" + DateTime.Now.ToString("yyyyMMdd"));
+                    FileSystem.CopyDirectory(
+                        sourceFolder, backupFolder,  UIOption.OnlyErrorDialogs, UICancelOption.DoNothing);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return backupFolder;
         }
 
         private void BtnFileDialog_Click(object sender, EventArgs e)
@@ -291,7 +321,7 @@ namespace FileRenamer
                     // If a single PDF is corrupted, don't crash the entire machine—skip it and log it!
                     string extractedDate = DateTime.Now.ToString("yyyyMMdd");
                     DgvPayments.Rows.Add(extractedDate, fileNameOnly, "ERROR", "Failed to parse file", ex.Message, "");
-                }                
+                }
             }
             DgvPayments.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             loadingScreen.Close();
