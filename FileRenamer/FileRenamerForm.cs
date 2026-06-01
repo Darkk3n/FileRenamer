@@ -261,7 +261,7 @@ namespace FileRenamer
             //if (folderDialog.ShowDialog() == DialogResult.OK)
             //{
             DgvPayments.Rows.Clear();
-            var sourceDirectory = @"C:\Users\455198\Downloads\20260529-WOREGG-1";
+            var sourceDirectory = @"C:\Users\455198\Downloads\Renombrar";
             var files = Directory.GetFiles(sourceDirectory, "*.pdf").ToList();
             files.Sort((x, y) => StrCmpLogicalW(x, y));
 
