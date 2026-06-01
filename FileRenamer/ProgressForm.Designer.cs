@@ -49,7 +49,7 @@
             // 
             LblStatus.AutoSize = true;
             LblStatus.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            LblStatus.Location = new Point(188, 419);
+            LblStatus.Location = new Point(44, 419);
             LblStatus.Name = "LblStatus";
             LblStatus.Size = new Size(169, 25);
             LblStatus.TabIndex = 1;
