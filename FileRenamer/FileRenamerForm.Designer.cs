@@ -52,7 +52,7 @@
             // 
             BtnClean.FlatAppearance.BorderColor = Color.DodgerBlue;
             BtnClean.FlatStyle = FlatStyle.Flat;
-            BtnClean.Location = new Point(252, 15);
+            BtnClean.Location = new Point(233, 17);
             BtnClean.Margin = new Padding(4);
             BtnClean.Name = "BtnClean";
             BtnClean.Size = new Size(96, 40);
@@ -128,7 +128,7 @@
             CmbCompany.Location = new Point(77, 17);
             CmbCompany.Margin = new Padding(4);
             CmbCompany.Name = "CmbCompany";
-            CmbCompany.Size = new Size(167, 29);
+            CmbCompany.Size = new Size(148, 29);
             CmbCompany.TabIndex = 3;
             CmbCompany.SelectedIndexChanged += CmbCompany_SelectedIndexChanged;
             // 
@@ -136,7 +136,7 @@
             // 
             BtnStart.FlatAppearance.BorderColor = Color.DodgerBlue;
             BtnStart.FlatStyle = FlatStyle.Flat;
-            BtnStart.Location = new Point(356, 15);
+            BtnStart.Location = new Point(337, 17);
             BtnStart.Margin = new Padding(4);
             BtnStart.Name = "BtnStart";
             BtnStart.Size = new Size(101, 40);
@@ -182,7 +182,7 @@
             // LblConsecutive
             // 
             LblConsecutive.AutoSize = true;
-            LblConsecutive.Location = new Point(465, 22);
+            LblConsecutive.Location = new Point(446, 25);
             LblConsecutive.Margin = new Padding(4, 0, 4, 0);
             LblConsecutive.Name = "LblConsecutive";
             LblConsecutive.Size = new Size(98, 21);
@@ -193,7 +193,7 @@
             // TxtConsecutive
             // 
             TxtConsecutive.BorderStyle = BorderStyle.FixedSingle;
-            TxtConsecutive.Location = new Point(571, 18);
+            TxtConsecutive.Location = new Point(543, 22);
             TxtConsecutive.Margin = new Padding(4);
             TxtConsecutive.Name = "TxtConsecutive";
             TxtConsecutive.Size = new Size(152, 29);
