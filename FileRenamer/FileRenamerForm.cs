@@ -38,6 +38,7 @@ namespace FileRenamer
             DgvPayments.Rows.Clear();
             DgvPayments.Rows.Add(formattedDate);
             LblFolder.Text = "...";
+            CmbCompany.SelectedIndex = 0;
         }
 
         private void DgvPayments_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e) => e.Row.Cells[0].Value = formattedDate;
@@ -92,6 +93,11 @@ namespace FileRenamer
                 MessageBox.Show("Seleccione una carpeta para continuar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            if (CmbCompany.SelectedItem.ToString() == "EMKA" && string.IsNullOrEmpty(TxtConsecutive.Text))
+            {
+                MessageBox.Show("Ingrese un número consecutivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             var dialogResult = MessageBox.Show("¿Desea renombrar y segmentar los archivos? Se conservarán los multipágina y se limpiarán los pre-segmentados.", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -101,8 +107,10 @@ namespace FileRenamer
                 var files = Directory.GetFiles(LblFolder.Text, "*.pdf").ToArray();
                 Array.Sort(files, (x, y) => StrCmpLogicalW(x, y)); // Enforces 1, 2, 3, 10 order
 
-                ProgressForm loadingScreen = new();
-                loadingScreen.StartPosition = FormStartPosition.Manual;
+                ProgressForm loadingScreen = new()
+                {
+                    StartPosition = FormStartPosition.Manual
+                };
                 int centerX = this.Location.X + (this.Width - loadingScreen.Width) / 2;
                 int centerY = this.Location.Y + (this.Height - loadingScreen.Height) / 2;
                 loadingScreen.Location = new Point(centerX, centerY);
@@ -114,10 +122,20 @@ namespace FileRenamer
                 int currentRowIndex = 0;
 
                 List<string> filesToDelete = [];
-
+                var consecutiveNumber = 0;
+                if (TxtConsecutive.Text != string.Empty)
+                {
+                    consecutiveNumber = int.Parse(TxtConsecutive.Text);
+                }
+                var useConsecutive = CmbCompany.SelectedItem.ToString() == "EMKA";
                 foreach (DataGridViewRow row in DgvPayments.Rows)
                 {
                     if (row.IsNewRow) continue;
+
+                    if (useConsecutive)
+                    {
+                        consecutiveNumber = row.Index == 0 ? consecutiveNumber : consecutiveNumber + 1;
+                    }
 
                     if (currentFileIndex >= files.Length)
                     {
@@ -139,21 +157,25 @@ namespace FileRenamer
                     currencyPart = string.Join("_", (currencyPart ?? "MXN").Split(Path.GetInvalidFileNameChars())).Trim();
 
                     string directory = Path.GetDirectoryName(currentFilePath);
-                    string newFileName = $"{datePart}-{CmbCompany.SelectedItem}-{vendorPart} {conceptPart}-{amountPart} {currencyPart}.pdf";
-                    string destinationPath = Path.Combine(directory, newFileName);
+                    var newFileName = string.Empty;
+                    var consecutivePart = useConsecutive ? $"{consecutiveNumber}-" : "";
 
-                    bool sliceSuccess = false;
-                    int totalPagesInFile = 0;
+                    newFileName = $"{datePart}-{CmbCompany.SelectedItem}-{consecutivePart}{vendorPart} {conceptPart}-{amountPart} {currencyPart}.pdf";
+
+                    var destinationPath = Path.Combine(directory, newFileName);
+
+                    var sliceSuccess = false;
+                    var totalPagesInFile = 0;
 
                     try
                     {
-                        using (PdfReader reader = new PdfReader(currentFilePath))
-                        using (PdfDocument sourcePdfDoc = new PdfDocument(reader))
+                        using (PdfReader reader = new(currentFilePath))
+                        using (PdfDocument sourcePdfDoc = new(reader))
                         {
                             totalPagesInFile = sourcePdfDoc.GetNumberOfPages();
 
-                            using (PdfWriter writer = new PdfWriter(destinationPath))
-                            using (PdfDocument newSinglePagePdf = new PdfDocument(writer))
+                            using (PdfWriter writer = new(destinationPath))
+                            using (PdfDocument newSinglePagePdf = new(writer))
                             {
                                 sourcePdfDoc.CopyPagesTo(internalPageTracker, internalPageTracker, newSinglePagePdf);
                             }
@@ -228,7 +250,7 @@ namespace FileRenamer
                     MessageBox.Show($"Nota: El proceso terminó con éxito, pero no se pudo eliminar la carpeta temporal de respaldo: {ex.Message}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-                MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(message, "Exito!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
