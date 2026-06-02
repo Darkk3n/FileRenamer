@@ -7,33 +7,28 @@ namespace FileRenamer
 {
     public partial class FileRenamerForm : Form
     {
+        #region Properties
         private readonly string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.local.json");
         readonly string formattedDate = DateTime.Now.Date.ToString("yyyyMMdd");
         [System.Runtime.InteropServices.DllImport("shlwapi.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
 #pragma warning disable SYSLIB1054 // Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time
         private static extern int StrCmpLogicalW(string psz1, string psz2);
-#pragma warning restore SYSLIB1054 // Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time
+#pragma warning restore SYSLIB1054 // Use 'LibraryImportAttribute' instead of 'DllImportAttribute' to generate P/Invoke marshalling code at compile time 
+        #endregion
 
+        #region Constructor
         public FileRenamerForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region UI Control Events
         private void FileRenamerForm_Load(object sender, EventArgs e)
         {
             CmbCompany.SelectedIndex = 0;
             SetupGrid();
             LoadSettings();
-        }
-
-        private void SetupGrid()
-        {
-            DgvPayments.Columns[0].FillWeight = 75;
-            DgvPayments.Columns[1].FillWeight = 300;
-            DgvPayments.Columns[1].FillWeight = 300;
-            DgvPayments.Rows.Clear();
-            DgvPayments.Rows.Add(formattedDate);
-            DgvPayments.Columns[2].DefaultCellStyle.Format = "N2";
         }
 
         private void BtnClean_Click(object sender, EventArgs e)
@@ -257,24 +252,6 @@ namespace FileRenamer
             }
         }
 
-        private static string BackupSourceFiles(string sourceFolder)
-        {
-            var backupFolder = string.Empty;
-            if (Directory.Exists(sourceFolder))
-            {
-                try
-                {
-                    backupFolder = Path.Combine(Directory.GetParent(sourceFolder).FullName, Path.GetFileName(sourceFolder) + "_Backup_" + DateTime.Now.ToString("yyyyMMdd"));
-                    FileSystem.CopyDirectory(
-                        sourceFolder, backupFolder, UIOption.OnlyErrorDialogs, UICancelOption.DoNothing);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            return backupFolder;
-        }
-
         private void BtnFileDialog_Click(object sender, EventArgs e)
         {
             using var folderDialog = new FolderBrowserDialog();
@@ -357,6 +334,61 @@ namespace FileRenamer
             //LblFolder.Text = folderDialog.SelectedPath;
             LblFolder.Text = sourceDirectory;
             //}
+        }
+
+        private void ChkDarkMode_CheckedChanged(object sender, EventArgs e)
+        {
+            ApplyTheme(ChkDarkMode.Checked);
+            SaveSettings();
+        }
+
+        private void TxtConsecutive_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                // e.Handled = true means "we handled this event, ignore the keystroke"
+                e.Handled = true;
+            }
+        }
+
+        private void CmbCompany_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LblConsecutive.Visible = CmbCompany.SelectedIndex != 0 && CmbCompany.SelectedItem.ToString() == "EMKA";
+            TxtConsecutive.Visible = CmbCompany.SelectedIndex != 0 && CmbCompany.SelectedItem.ToString() == "EMKA";
+            if (CmbCompany.SelectedItem.ToString() != "EMKA")
+            {
+                TxtConsecutive.Text = string.Empty;
+            }
+        }
+        #endregion
+
+        #region Helpers
+        private void SetupGrid()
+        {
+            DgvPayments.Columns[0].FillWeight = 75;
+            DgvPayments.Columns[1].FillWeight = 300;
+            DgvPayments.Columns[1].FillWeight = 300;
+            DgvPayments.Rows.Clear();
+            DgvPayments.Rows.Add(formattedDate);
+            DgvPayments.Columns[2].DefaultCellStyle.Format = "N2";
+        }
+
+        private static string BackupSourceFiles(string sourceFolder)
+        {
+            var backupFolder = string.Empty;
+            if (Directory.Exists(sourceFolder))
+            {
+                try
+                {
+                    backupFolder = Path.Combine(Directory.GetParent(sourceFolder).FullName, Path.GetFileName(sourceFolder) + "_Backup_" + DateTime.Now.ToString("yyyyMMdd"));
+                    FileSystem.CopyDirectory(
+                        sourceFolder, backupFolder, UIOption.OnlyErrorDialogs, UICancelOption.DoNothing);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return backupFolder;
         }
 
         private static string CleanseAndHealText(string rawText)
@@ -491,25 +523,6 @@ namespace FileRenamer
             #endregion
         }
 
-        private void TxtConsecutive_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                // e.Handled = true means "we handled this event, ignore the keystroke"
-                e.Handled = true;
-            }
-        }
-
-        private void CmbCompany_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LblConsecutive.Visible = CmbCompany.SelectedIndex != 0 && CmbCompany.SelectedItem.ToString() == "EMKA";
-            TxtConsecutive.Visible = CmbCompany.SelectedIndex != 0 && CmbCompany.SelectedItem.ToString() == "EMKA";
-            if (CmbCompany.SelectedItem.ToString() != "EMKA")
-            {
-                TxtConsecutive.Text = string.Empty;
-            }
-        }
-
         private void ApplyTheme(bool isDarkMode)
         {
             // Define your color palettes
@@ -555,12 +568,6 @@ namespace FileRenamer
             }
         }
 
-        private void ChkDarkMode_CheckedChanged(object sender, EventArgs e)
-        {
-            ApplyTheme(ChkDarkMode.Checked);
-            SaveSettings();
-        }
-
         private void SaveSettings()
         {
             var settings = new LocalAppSettings { IsDarkMode = ChkDarkMode.Checked };
@@ -587,6 +594,7 @@ namespace FileRenamer
                     ChkDarkMode.Checked = false;
                 }
             }
-        }
+        } 
+        #endregion
     }
 }
