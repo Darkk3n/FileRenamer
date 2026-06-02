@@ -172,7 +172,7 @@
             Controls.Add(BtnClean);
             Name = "FileRenamerForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Renombrador de Archivos";
+            Text = "Tesoreria - Renombrador de Archivos";
             Load += FileRenamerForm_Load;
             ((System.ComponentModel.ISupportInitialize)DgvPayments).EndInit();
             ResumeLayout(false);
