@@ -113,7 +113,7 @@
             // 
             CmbCompany.DropDownStyle = ComboBoxStyle.DropDownList;
             CmbCompany.FormattingEnabled = true;
-            CmbCompany.Items.AddRange(new object[] { "--SELECCIONE--", "WOREGG", "BECHEM", "UHLMANN" });
+            CmbCompany.Items.AddRange(new object[] { "--SELECCIONE--", "WOREGG", "BECHEM", "UHLMANN", "NETSTAL", "EMKA" });
             CmbCompany.Location = new Point(59, 12);
             CmbCompany.Name = "CmbCompany";
             CmbCompany.Size = new Size(131, 23);
