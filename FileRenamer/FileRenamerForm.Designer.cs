@@ -74,7 +74,7 @@
             DgvPayments.Margin = new Padding(4);
             DgvPayments.Name = "DgvPayments";
             DgvPayments.ScrollBars = ScrollBars.Vertical;
-            DgvPayments.Size = new Size(1308, 505);
+            DgvPayments.Size = new Size(1323, 505);
             DgvPayments.TabIndex = 1;
             DgvPayments.CellValidated += DgvPayments_CellValidated;
             DgvPayments.CellValidating += DgvPayments_CellValidating;
@@ -217,7 +217,7 @@
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(1308, 643);
+            ClientSize = new Size(1323, 643);
             Controls.Add(ChkDarkMode);
             Controls.Add(TxtConsecutive);
             Controls.Add(LblConsecutive);
