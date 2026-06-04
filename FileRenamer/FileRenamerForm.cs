@@ -194,15 +194,10 @@ namespace FileRenamer
 
             DgvPayments.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             loadingScreen.Close();
-            var message = string.Empty;
+            var message = files.Count == 0 ? "No se encontraron archivos para escanear." : $"Se escanearon y cargaron {files.Count}(s) archivo(s) en la tabla.";
             if (files.Count == 0)
             {
-                message = "No se encontraron archivos para escanear";
                 DgvPayments.Rows.Add(extractedDate, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
-            }
-            else
-            {
-                message = $"Se escanearon y cargaron {files.Count} archivos en la tabla";
             }
             MessageBox.Show(message, "Escaneo Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LblFolder.Text = sourceDirectory;
