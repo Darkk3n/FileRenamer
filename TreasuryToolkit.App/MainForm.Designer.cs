@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             PnlSideBar = new Panel();
-            BtnPdfTool = new Button();
-            BtnExcelTool = new Button();
+            ChkGlobalTheme = new CheckBox();
             BtnAbout = new Button();
+            BtnExcelTool = new Button();
+            BtnPdfTool = new Button();
             PnlMainContent = new Panel();
             PnlSideBar.SuspendLayout();
             SuspendLayout();
@@ -39,6 +40,7 @@
             // PnlSideBar
             // 
             PnlSideBar.BackColor = SystemColors.ControlDarkDark;
+            PnlSideBar.Controls.Add(ChkGlobalTheme);
             PnlSideBar.Controls.Add(BtnAbout);
             PnlSideBar.Controls.Add(BtnExcelTool);
             PnlSideBar.Controls.Add(BtnPdfTool);
@@ -48,30 +50,18 @@
             PnlSideBar.Size = new Size(200, 603);
             PnlSideBar.TabIndex = 0;
             // 
-            // BtnPdfTool
+            // ChkGlobalTheme
             // 
-            BtnPdfTool.Dock = DockStyle.Top;
-            BtnPdfTool.FlatAppearance.BorderSize = 0;
-            BtnPdfTool.FlatStyle = FlatStyle.Flat;
-            BtnPdfTool.Location = new Point(0, 0);
-            BtnPdfTool.Name = "BtnPdfTool";
-            BtnPdfTool.Size = new Size(200, 29);
-            BtnPdfTool.TabIndex = 0;
-            BtnPdfTool.Text = "Renombrador de PDFs";
-            BtnPdfTool.UseVisualStyleBackColor = true;
-            // 
-            // BtnExcelTool
-            // 
-            BtnExcelTool.BackgroundImageLayout = ImageLayout.None;
-            BtnExcelTool.Dock = DockStyle.Top;
-            BtnExcelTool.FlatAppearance.BorderSize = 0;
-            BtnExcelTool.FlatStyle = FlatStyle.Flat;
-            BtnExcelTool.Location = new Point(0, 29);
-            BtnExcelTool.Name = "BtnExcelTool";
-            BtnExcelTool.Size = new Size(200, 23);
-            BtnExcelTool.TabIndex = 1;
-            BtnExcelTool.Text = "Excel";
-            BtnExcelTool.UseVisualStyleBackColor = true;
+            ChkGlobalTheme.AutoSize = true;
+            ChkGlobalTheme.Dock = DockStyle.Bottom;
+            ChkGlobalTheme.Location = new Point(0, 584);
+            ChkGlobalTheme.Name = "ChkGlobalTheme";
+            ChkGlobalTheme.Padding = new Padding(50, 0, 0, 0);
+            ChkGlobalTheme.Size = new Size(200, 19);
+            ChkGlobalTheme.TabIndex = 3;
+            ChkGlobalTheme.Text = "Modo Oscuro";
+            ChkGlobalTheme.UseVisualStyleBackColor = true;
+            ChkGlobalTheme.CheckedChanged += ChkGlobalTheme_CheckedChanged;
             // 
             // BtnAbout
             // 
@@ -84,6 +74,30 @@
             BtnAbout.TabIndex = 2;
             BtnAbout.Text = "Acerca De";
             BtnAbout.UseVisualStyleBackColor = true;
+            // 
+            // BtnExcelTool
+            // 
+            BtnExcelTool.Dock = DockStyle.Top;
+            BtnExcelTool.FlatAppearance.BorderSize = 0;
+            BtnExcelTool.FlatStyle = FlatStyle.Flat;
+            BtnExcelTool.Location = new Point(0, 29);
+            BtnExcelTool.Name = "BtnExcelTool";
+            BtnExcelTool.Size = new Size(200, 23);
+            BtnExcelTool.TabIndex = 1;
+            BtnExcelTool.Text = "Excel";
+            BtnExcelTool.UseVisualStyleBackColor = true;
+            // 
+            // BtnPdfTool
+            // 
+            BtnPdfTool.Dock = DockStyle.Top;
+            BtnPdfTool.FlatAppearance.BorderSize = 0;
+            BtnPdfTool.FlatStyle = FlatStyle.Flat;
+            BtnPdfTool.Location = new Point(0, 0);
+            BtnPdfTool.Name = "BtnPdfTool";
+            BtnPdfTool.Size = new Size(200, 29);
+            BtnPdfTool.TabIndex = 0;
+            BtnPdfTool.Text = "Renombrador de PDFs";
+            BtnPdfTool.UseVisualStyleBackColor = true;
             // 
             // PnlMainContent
             // 
@@ -106,6 +120,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Tesoreria";
             PnlSideBar.ResumeLayout(false);
+            PnlSideBar.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -116,5 +131,6 @@
         private Button BtnPdfTool;
         private Button BtnAbout;
         private Panel PnlMainContent;
+        private CheckBox ChkGlobalTheme;
     }
 }
