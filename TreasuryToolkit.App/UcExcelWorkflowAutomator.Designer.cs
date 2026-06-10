@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            LblPending = new Label();
             SuspendLayout();
             // 
-            // label1
+            // LblPending
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 48F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(50, 164);
-            label1.Name = "label1";
-            label1.Size = new Size(763, 86);
-            label1.TabIndex = 0;
-            label1.Text = "Excel here, coming soon...";
+            LblPending.AutoSize = true;
+            LblPending.Font = new Font("Segoe UI", 48F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            LblPending.Location = new Point(50, 164);
+            LblPending.Name = "LblPending";
+            LblPending.Size = new Size(763, 86);
+            LblPending.TabIndex = 0;
+            LblPending.Text = "Excel here, coming soon...";
             // 
             // UcExcelWorkflowAutomator
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(label1);
+            Controls.Add(LblPending);
             Name = "UcExcelWorkflowAutomator";
             Size = new Size(858, 439);
             ResumeLayout(false);
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private Label label1;
+        private Label LblPending;
     }
 }
