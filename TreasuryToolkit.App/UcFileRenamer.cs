@@ -260,7 +260,7 @@ namespace TreasuryToolkit.App
             return backupFolder;
         }
 
-        private void ApplyTheme(bool isDarkMode)
+        public void ApplyTheme(bool isDarkMode)
         {
             // Define your color palettes
             Color formBg = isDarkMode ? Color.FromArgb(30, 30, 30) : Color.FromKnownColor(KnownColor.ControlLightLight);
