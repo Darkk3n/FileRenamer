@@ -37,7 +37,6 @@ namespace TreasuryToolkit.App
         {
             CmbCompany.SelectedIndex = 0;
             SetupGrid();
-            LoadSettings();
         }
 
         private void BtnClean_Click(object sender, EventArgs e)
@@ -201,12 +200,6 @@ namespace TreasuryToolkit.App
             LblFolder.Text = sourceDirectory;
         }
 
-        private void ChkDarkMode_CheckedChanged(object sender, EventArgs e)
-        {
-            ApplyTheme(ChkDarkMode.Checked);
-            SaveSettings();
-        }
-
         private void TxtConsecutive_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
@@ -301,34 +294,6 @@ namespace TreasuryToolkit.App
                     dgv.DefaultCellStyle.BackColor = controlBg;
                     dgv.DefaultCellStyle.ForeColor = textColor;
                     dgv.GridColor = isDarkMode ? Color.FromArgb(63, 63, 70) : Color.LightGray;
-                }
-            }
-        }
-
-        private void SaveSettings()
-        {
-            var settings = new LocalAppSettings { IsDarkMode = ChkDarkMode.Checked };
-            string json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(settingsFilePath, json);
-        }
-
-        private void LoadSettings()
-        {
-            if (File.Exists(settingsFilePath))
-            {
-                try
-                {
-                    string json = File.ReadAllText(settingsFilePath);
-                    var settings = JsonSerializer.Deserialize<LocalAppSettings>(json);
-
-                    if (settings != null)
-                    {
-                        ChkDarkMode.Checked = settings.IsDarkMode;
-                    }
-                }
-                catch
-                {
-                    ChkDarkMode.Checked = false;
                 }
             }
         }
