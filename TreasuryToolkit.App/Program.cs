@@ -28,7 +28,7 @@ namespace TreasuryToolkit.App
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<FileRenamerForm>();
+            services.AddTransient<UcFileRenamer>();
             services.AddTransient<MainForm>();
             services.AddTransient<ProgressForm>();
             services.AddSingleton<Func<ProgressForm>>(x => () => x.GetRequiredService<ProgressForm>());

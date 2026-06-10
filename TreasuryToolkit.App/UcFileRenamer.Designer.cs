@@ -1,6 +1,6 @@
 ﻿namespace TreasuryToolkit.App
 {
-    partial class FileRenamerForm
+    partial class UcFileRenamer
     {
         /// <summary>
         /// Required designer variable.
@@ -230,11 +230,8 @@
             Controls.Add(DgvPayments);
             Controls.Add(BtnClean);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4);
-            MaximizeBox = false;
             Name = "FileRenamerForm";
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "Tesoreria - Renombrador de Archivos";
             Load += FileRenamerForm_Load;
             ((System.ComponentModel.ISupportInitialize)DgvPayments).EndInit();

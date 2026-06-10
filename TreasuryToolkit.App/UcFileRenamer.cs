@@ -7,7 +7,7 @@ using TreasuryToolkit.Core.Models;
 
 namespace TreasuryToolkit.App
 {
-    public partial class FileRenamerForm : Form
+    public partial class UcFileRenamer : UserControl
     {
         #region Properties
         private readonly string settingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.local.json");
@@ -23,7 +23,7 @@ namespace TreasuryToolkit.App
         #endregion
 
         #region Constructor
-        public FileRenamerForm(Func<ProgressForm> progressFormFactory, IPdfProcessor pdfProcessor, IFileScanner fileScanner)
+        public UcFileRenamer(Func<ProgressForm> progressFormFactory, IPdfProcessor pdfProcessor, IFileScanner fileScanner)
         {
             InitializeComponent();
             _progressFormFactory = progressFormFactory;
