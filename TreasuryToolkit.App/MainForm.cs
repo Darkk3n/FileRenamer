@@ -71,10 +71,12 @@ namespace TreasuryToolkit.App
             if (_currentView is UcFileRenamer pdfView)
             {
                 pdfView.ApplyTheme(_isDarkMode);
+                UpdateButtonHighlight(BtnPdfTool);
             }
             else if (_currentView is UcExcelWorkflowAutomator excelView)
             {
                 excelView.ApplyTheme(_isDarkMode);
+                UpdateButtonHighlight(BtnExcelTool);
             }
         }
 
@@ -109,11 +111,13 @@ namespace TreasuryToolkit.App
         private void BtnPdfTool_Click(object sender, EventArgs e)
         {
             ShowView(_fileRenamer);
+            UpdateButtonHighlight(BtnPdfTool);
         }
 
         private void BtnExcelTool_Click(object sender, EventArgs e)
         {
             ShowView(_excelWorkflowAutomator);
+            UpdateButtonHighlight(BtnExcelTool);
         }
 
         private void UpdateButtonHighlight(Button activeButton)
@@ -121,7 +125,16 @@ namespace TreasuryToolkit.App
             Button[] navButtons = [BtnPdfTool, BtnExcelTool, BtnAbout];
             foreach (Button button in navButtons)
             {
-
+                if (button == activeButton)
+                {
+                    button.BackColor = _isDarkMode ? Color.FromArgb(45, 45, 48) : Color.FromArgb(0, 120, 215);
+                    button.ForeColor = Color.White;
+                }
+                else
+                {
+                    button.BackColor = _isDarkMode ? Color.FromArgb(24, 24, 24) : Color.FromArgb(230, 235, 240);
+                    button.ForeColor = _isDarkMode ? Color.DarkGray : Color.FromArgb(64, 64, 64);
+                }
             }
         }
     }
