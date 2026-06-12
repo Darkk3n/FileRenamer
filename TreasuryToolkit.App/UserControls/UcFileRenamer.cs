@@ -141,22 +141,23 @@ namespace TreasuryToolkit.App
 
             int totalRows = paymentRows.Count;
             int startConsecutive = string.IsNullOrEmpty(TxtConsecutive.Text) ? 0 : int.Parse(TxtConsecutive.Text);
+            var company = (CompanyModel)CmbCompany.SelectedItem;
 
-            pdfProcessor.ProcessPaymentBatch(files, paymentRows, CmbCompany.SelectedItem.ToString(), startConsecutive,
-                (currentRowIndex, currentFileName) =>
-                {
-                    // This code runs INSIDE the loop of the service, but executes on the Form!
-                    if (loadingScreen != null && loadingScreen.Controls["lblStatus"] != null)
+            pdfProcessor.ProcessPaymentBatch(files, paymentRows, company.Name, startConsecutive,
+                    (currentRowIndex, currentFileName) =>
                     {
-                        int humanRowIndex = currentRowIndex == totalRows ? totalRows : currentRowIndex + 1;
-                        loadingScreen.Controls["lblStatus"].Text = $"Procesando fila {humanRowIndex} de {totalRows}: {currentFileName}...";
-                        loadingScreen.Refresh();
-                    }
+                        // This code runs INSIDE the loop of the service, but executes on the Form!
+                        if (loadingScreen != null && loadingScreen.Controls["lblStatus"] != null)
+                        {
+                            int humanRowIndex = currentRowIndex == totalRows ? totalRows : currentRowIndex + 1;
+                            loadingScreen.Controls["lblStatus"].Text = $"Procesando fila {humanRowIndex} de {totalRows}: {currentFileName}...";
+                            loadingScreen.Refresh();
+                        }
 
-                    // Keep the UI thread breathing and layout moving smoothly
-                    Application.DoEvents();
-                    Thread.Sleep(150);
-                });
+                        // Keep the UI thread breathing and layout moving smoothly
+                        Application.DoEvents();
+                        Thread.Sleep(150);
+                    });
             Thread.Sleep(300);
             loadingScreen.Close();
             DeleteBackUp(backupFolder);
